@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body>
+    <header class="bg-white border-b border-gray-200 h-16 flex items-center px-4 fixed top-0 left-0 right-0 z-10">
+        <div class="flex-1 flex items-center">
+            <i data-feather="layout" class="w-5 h-5 mr-2"></i>
+            <h1 class="text-xl font-bold">Interactive Resume Builder</h1>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button id="undo-btn" class="p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-sm" disabled>
+                <i data-feather="corner-up-left" class="w-4 h-4 mr-1"></i>
+                Undo
+            </button>
+            <button id="redo-btn" class="p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-sm" disabled>
+                <i data-feather="corner-up-right" class="w-4 h-4 mr-1"></i>
+                Redo
+            </button>
+            <button id="preview-btn" class="p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-sm">
+                <i data-feather="eye" class="w-4 h-4 mr-1"></i>
+                Preview
+            </button>
+            <button id="export-btn" class="p-2 bg-green-500 text-white rounded flex items-center justify-center text-sm">
+                <i data-feather="download" class="w-4 h-4 mr-1"></i>
+                Export
+            </button>
+        </div>
+    </header>
+    
+    <div class="flex h-screen pt-16">
+        <!-- Sidebar -->
+        <div id="sidebar" class="w-64 bg-gray-100 border-r border-gray-200 p-4 flex flex-col overflow-y-auto">
+            <div class="mb-6">
+                <h3 class="font-medium text-sm text-gray-500 mb-2">ADD SECTIONS</h3>
+                <div class="grid grid-cols-2 gap-2 section-templates">
+                    <!-- Section templates will be added dynamically -->
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="font-medium text-sm text-gray-500 mb-2">THEMES</h3>
+                <div class="grid grid-cols-2 gap-2 theme-presets">
+                    <!-- Theme presets will be added dynamically -->
+                </div>
+            </div>
+            
+            <div id="section-properties" class="mb-6 hidden">
+                <h3 class="font-medium text-sm text-gray-500 mb-2">SECTION PROPERTIES</h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-xs text-gray-600 mb-1 block">Animation</label>
+                        <select id="animation-select" class="w-full p-2 text-sm border border-gray-300 rounded">
+                            <option value="">None</option>
+                            <!-- Animation options will be added dynamically -->
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-gray-600 mb-1 block">Delay (seconds)</label>
+                        <input id="delay-input" type="number" class="w-full p-2 text-sm border border-gray-300 rounded" min="0" max="5" step="0.1" value="0">
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-gray-600 mb-1 block">Content</label>
+                        <textarea id="content-textarea" class="w-full p-2 text-sm border border-gray-300 rounded" rows="5"></textarea>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button id="clone-section-btn" class="flex-1 p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-xs">
+                            <i data-feather="copy" class="w-4 h-4 mr-1 text-blue-500"></i>
+                            Clone
+                        </button>
+                        
+                        <button id="delete-section-btn" class="flex-1 p-2 bg-white rounded border border-gray-200 hover:bg-red-50 flex items-center justify-center text-xs text-red-500">
+                            <i data-feather="trash-2" class="w-4 h-4 mr-1"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Canvas -->
+        <div id="canvas-container" class="flex-1 p-8 overflow-auto bg-white">
+            <div id="canvas" class="relative mx-auto bg-white" style="width: 800px; min-height: 1000px;">
+                <!-- Resume sections will be added here -->
+                <div id="empty-state" class="absolute inset-0 flex items-center justify-center">
+                    <div class="text-center text-gray-400">
+                        <i data-feather="plus-circle" class="w-8 h-8 mx-auto mb-2"></i>
+                        <p>Add sections from the sidebar to start building your resume</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Getting started modal -->
+    <div id="info-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg max-w-md w-full p-6">
+            <h2 class="text-xl font-bold mb-4">Welcome to Resume Builder!</h2>
+            <p class="mb-4">This interactive tool allows you to create a visually engaging, animated resume. Here's how to get started:</p>
+            
+            <ul class="list-disc pl-5 mb-4 space-y-2">
+                <li><strong>Add Sections:</strong> Choose from templates in the sidebar</li>
+                <li><strong>Arrange:</strong> Drag sections to position them</li>
+                <li><strong>Customize:</strong> Select a section to edit its content and animation</li>
+                <li><strong>Preview:</strong> See how your animated resume will appear</li>
+                <li><strong>Export:</strong> Download the HTML file to use anywhere</li>
+            </ul>
+            
+            <button id="start-building-btn" class="w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                Start Building
+            </button>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
