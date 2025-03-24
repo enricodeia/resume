@@ -4,96 +4,220 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Resume Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 </head>
 <body>
-    <header class="bg-white border-b border-gray-200 h-16 flex items-center px-4 fixed top-0 left-0 right-0 z-10">
-        <div class="flex-1 flex items-center">
-            <i data-feather="layout" class="w-5 h-5 mr-2"></i>
-            <h1 class="text-xl font-bold">Interactive Resume Builder</h1>
-        </div>
-        <div class="flex items-center space-x-2">
-            <button id="undo-btn" class="p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-sm" disabled>
-                <i data-feather="corner-up-left" class="w-4 h-4 mr-1"></i>
-                Undo
-            </button>
-            <button id="redo-btn" class="p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-sm" disabled>
-                <i data-feather="corner-up-right" class="w-4 h-4 mr-1"></i>
-                Redo
-            </button>
-            <button id="preview-btn" class="p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-sm">
-                <i data-feather="eye" class="w-4 h-4 mr-1"></i>
-                Preview
-            </button>
-            <button id="export-btn" class="p-2 bg-green-500 text-white rounded flex items-center justify-center text-sm">
-                <i data-feather="download" class="w-4 h-4 mr-1"></i>
-                Export
-            </button>
-        </div>
-    </header>
-    
-    <div class="flex h-screen pt-16">
-        <!-- Sidebar -->
-        <div id="sidebar" class="w-64 bg-gray-100 border-r border-gray-200 p-4 flex flex-col overflow-y-auto">
-            <div class="mb-6">
-                <h3 class="font-medium text-sm text-gray-500 mb-2">ADD SECTIONS</h3>
-                <div class="grid grid-cols-2 gap-2 section-templates">
-                    <!-- Section templates will be added dynamically -->
-                </div>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="logo-container">
+                <i data-feather="layout" class="logo-icon"></i>
+                <h1 class="logo-text">ResumeForge</h1>
             </div>
-            
-            <div class="mb-6">
-                <h3 class="font-medium text-sm text-gray-500 mb-2">THEMES</h3>
-                <div class="grid grid-cols-2 gap-2 theme-presets">
-                    <!-- Theme presets will be added dynamically -->
-                </div>
-            </div>
-            
-            <div id="section-properties" class="mb-6 hidden">
-                <h3 class="font-medium text-sm text-gray-500 mb-2">SECTION PROPERTIES</h3>
-                <div class="space-y-3">
-                    <div>
-                        <label class="text-xs text-gray-600 mb-1 block">Animation</label>
-                        <select id="animation-select" class="w-full p-2 text-sm border border-gray-300 rounded">
-                            <option value="">None</option>
-                            <!-- Animation options will be added dynamically -->
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="text-xs text-gray-600 mb-1 block">Delay (seconds)</label>
-                        <input id="delay-input" type="number" class="w-full p-2 text-sm border border-gray-300 rounded" min="0" max="5" step="0.1" value="0">
-                    </div>
-                    
-                    <div>
-                        <label class="text-xs text-gray-600 mb-1 block">Content</label>
-                        <textarea id="content-textarea" class="w-full p-2 text-sm border border-gray-300 rounded" rows="5"></textarea>
-                    </div>
-                    
-                    <div class="flex space-x-2">
-                        <button id="clone-section-btn" class="flex-1 p-2 bg-white rounded border border-gray-200 hover:bg-gray-50 flex items-center justify-center text-xs">
-                            <i data-feather="copy" class="w-4 h-4 mr-1 text-blue-500"></i>
-                            Clone
-                        </button>
-                        
-                        <button id="delete-section-btn" class="flex-1 p-2 bg-white rounded border border-gray-200 hover:bg-red-50 flex items-center justify-center text-xs text-red-500">
-                            <i data-feather="trash-2" class="w-4 h-4 mr-1"></i>
-                            Delete
-                        </button>
+            <div class="control-buttons">
+                <button id="undo-btn" class="btn btn-icon" disabled>
+                    <i data-feather="corner-up-left"></i>
+                    <span>Undo</span>
+                </button>
+                <button id="redo-btn" class="btn btn-icon" disabled>
+                    <i data-feather="corner-up-right"></i>
+                    <span>Redo</span>
+                </button>
+                <button id="save-btn" class="btn btn-icon">
+                    <i data-feather="save"></i>
+                    <span>Save</span>
+                </button>
+                <button id="preview-btn" class="btn btn-icon">
+                    <i data-feather="eye"></i>
+                    <span>Preview</span>
+                </button>
+                <div class="dropdown">
+                    <button id="export-btn" class="btn btn-primary">
+                        <i data-feather="download"></i>
+                        <span>Export</span>
+                    </button>
+                    <div class="dropdown-content">
+                        <button id="export-html">HTML</button>
+                        <button id="export-pdf">PDF</button>
+                        <button id="export-image">Image</button>
                     </div>
                 </div>
             </div>
-        </div>
+        </header>
         
-        <!-- Canvas -->
-        <div id="canvas-container" class="flex-1 p-8 overflow-auto bg-white">
-            <div id="canvas" class="relative mx-auto bg-white" style="width: 800px; min-height: 1000px;">
-                <!-- Resume sections will be added here -->
-                <div id="empty-state" class="absolute inset-0 flex items-center justify-center">
-                    <div class="text-center text-gray-400">
-                        <i data-feather="plus-circle" class="w-8 h-8 mx-auto mb-2"></i>
+        <div class="main-container">
+            <!-- Sidebar -->
+            <div id="sidebar" class="sidebar">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="sections">
+                        <i data-feather="layers"></i>
+                        <span>Sections</span>
+                    </button>
+                    <button class="tab-btn" data-tab="style">
+                        <i data-feather="sliders"></i>
+                        <span>Style</span>
+                    </button>
+                    <button class="tab-btn" data-tab="templates">
+                        <i data-feather="grid"></i>
+                        <span>Templates</span>
+                    </button>
+                </div>
+                
+                <div class="tab-content active" id="sections-tab">
+                    <h3 class="sidebar-heading">ADD SECTIONS</h3>
+                    <div class="section-templates grid grid-cols-2 gap-2">
+                        <!-- Section templates will be added dynamically -->
+                    </div>
+                    
+                    <div id="section-properties" class="hidden">
+                        <h3 class="sidebar-heading mt-6">SECTION PROPERTIES</h3>
+                        <div class="space-y-3">
+                            <div class="form-group">
+                                <label for="animation-select">Animation</label>
+                                <select id="animation-select" class="form-control">
+                                    <option value="">None</option>
+                                    <!-- Animation options will be added dynamically -->
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="animation-duration">Duration (seconds)</label>
+                                <input id="animation-duration" type="range" min="0.1" max="2" step="0.1" value="0.5" class="form-range">
+                                <span id="duration-value">0.5s</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="delay-input">Delay (seconds)</label>
+                                <input id="delay-input" type="range" min="0" max="2" step="0.1" value="0" class="form-range">
+                                <span id="delay-value">0s</span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="content-textarea">Content</label>
+                                <textarea id="content-textarea" class="form-control" rows="5"></textarea>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button id="clone-section-btn" class="btn btn-icon btn-outline-primary">
+                                    <i data-feather="copy"></i>
+                                    <span>Clone</span>
+                                </button>
+                                
+                                <button id="delete-section-btn" class="btn btn-icon btn-outline-danger">
+                                    <i data-feather="trash-2"></i>
+                                    <span>Delete</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="style-tab">
+                    <h3 class="sidebar-heading">THEMES</h3>
+                    <div class="theme-presets">
+                        <!-- Theme presets will be added dynamically -->
+                    </div>
+                    
+                    <h3 class="sidebar-heading mt-6">CUSTOM COLORS</h3>
+                    <div class="space-y-3">
+                        <div class="form-group">
+                            <label for="primary-color">Primary Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="primary-color" class="color-input">
+                                <input type="text" id="primary-color-text" class="color-text" value="#2563eb">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="accent-color">Accent Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="accent-color" class="color-input">
+                                <input type="text" id="accent-color-text" class="color-text" value="#dbeafe">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="text-color">Text Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="text-color" class="color-input">
+                                <input type="text" id="text-color-text" class="color-text" value="#1e293b">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="background-color">Background Color</label>
+                            <div class="color-picker">
+                                <input type="color" id="background-color" class="color-input">
+                                <input type="text" id="background-color-text" class="color-text" value="#ffffff">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="sidebar-heading mt-6">TYPOGRAPHY</h3>
+                    <div class="space-y-3">
+                        <div class="form-group">
+                            <label for="heading-font">Heading Font</label>
+                            <select id="heading-font" class="form-control">
+                                <option value="Poppins">Poppins</option>
+                                <option value="Playfair Display">Playfair Display</option>
+                                <option value="Montserrat">Montserrat</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Open Sans">Open Sans</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="body-font">Body Font</label>
+                            <select id="body-font" class="form-control">
+                                <option value="Poppins">Poppins</option>
+                                <option value="Roboto">Roboto</option>
+                                <option value="Open Sans">Open Sans</option>
+                                <option value="Lato">Lato</option>
+                                <option value="Inter">Inter</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="templates-tab">
+                    <h3 class="sidebar-heading">RESUME TEMPLATES</h3>
+                    <div class="templates-grid">
+                        <div class="template-card" data-template="modern">
+                            <div class="template-preview modern-preview"></div>
+                            <h4>Modern</h4>
+                        </div>
+                        <div class="template-card" data-template="creative">
+                            <div class="template-preview creative-preview"></div>
+                            <h4>Creative</h4>
+                        </div>
+                        <div class="template-card" data-template="minimal">
+                            <div class="template-preview minimal-preview"></div>
+                            <h4>Minimal</h4>
+                        </div>
+                        <div class="template-card" data-template="professional">
+                            <div class="template-preview professional-preview"></div>
+                            <h4>Professional</h4>
+                        </div>
+                        <div class="template-card" data-template="elegant">
+                            <div class="template-preview elegant-preview"></div>
+                            <h4>Elegant</h4>
+                        </div>
+                        <div class="template-card" data-template="tech">
+                            <div class="template-preview tech-preview"></div>
+                            <h4>Tech</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Canvas -->
+            <div id="canvas-container" class="canvas-container">
+                <div id="canvas" class="canvas">
+                    <!-- Resume sections will be added here -->
+                    <div id="empty-state" class="empty-state">
+                        <i data-feather="plus-circle" class="empty-icon"></i>
                         <p>Add sections from the sidebar to start building your resume</p>
                     </div>
                 </div>
@@ -101,25 +225,151 @@
         </div>
     </div>
     
-    <!-- Getting started modal -->
-    <div id="info-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-lg max-w-md w-full p-6">
-            <h2 class="text-xl font-bold mb-4">Welcome to Resume Builder!</h2>
-            <p class="mb-4">This interactive tool allows you to create a visually engaging, animated resume. Here's how to get started:</p>
-            
-            <ul class="list-disc pl-5 mb-4 space-y-2">
-                <li><strong>Add Sections:</strong> Choose from templates in the sidebar</li>
-                <li><strong>Arrange:</strong> Drag sections to position them</li>
-                <li><strong>Customize:</strong> Select a section to edit its content and animation</li>
-                <li><strong>Preview:</strong> See how your animated resume will appear</li>
-                <li><strong>Export:</strong> Download the HTML file to use anywhere</li>
-            </ul>
-            
-            <button id="start-building-btn" class="w-full p-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                Start Building
-            </button>
+    <!-- Tour overlay -->
+    <div id="tour-overlay" class="tour-overlay hidden">
+        <div class="tour-step" id="tour-step-1">
+            <h3>Welcome to ResumeForge!</h3>
+            <p>Let's get you familiar with the basics. Click Next to continue.</p>
+            <div class="tour-buttons">
+                <button class="btn btn-outline-primary" id="tour-skip">Skip Tour</button>
+                <button class="btn btn-primary" id="tour-next">Next</button>
+            </div>
+        </div>
+        <div class="tour-step hidden" id="tour-step-2">
+            <h3>Add Sections</h3>
+            <p>Click on any section template to add it to your resume.</p>
+            <div class="tour-buttons">
+                <button class="btn btn-outline-primary" id="tour-prev">Previous</button>
+                <button class="btn btn-primary" id="tour-next-2">Next</button>
+            </div>
+        </div>
+        <div class="tour-step hidden" id="tour-step-3">
+            <h3>Customize Your Resume</h3>
+            <p>Click on a section to edit its content and animation.</p>
+            <div class="tour-buttons">
+                <button class="btn btn-outline-primary" id="tour-prev-2">Previous</button>
+                <button class="btn btn-primary" id="tour-next-3">Next</button>
+            </div>
+        </div>
+        <div class="tour-step hidden" id="tour-step-4">
+            <h3>Preview & Export</h3>
+            <p>Click Preview to see how your resume will look with animations, and Export when you're done!</p>
+            <div class="tour-buttons">
+                <button class="btn btn-outline-primary" id="tour-prev-3">Previous</button>
+                <button class="btn btn-primary" id="tour-finish">Got it!</button>
+            </div>
         </div>
     </div>
+    
+    <!-- Getting started modal -->
+    <div id="info-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Welcome to ResumeForge!</h2>
+                <button id="modal-close" class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <p>Create stunning, animated resumes that stand out from the crowd.</p>
+                
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <i data-feather="layout" class="feature-icon"></i>
+                        <h4>Drag & Drop</h4>
+                        <p>Easily arrange sections with intuitive controls</p>
+                    </div>
+                    <div class="feature-item">
+                        <i data-feather="play" class="feature-icon"></i>
+                        <h4>Animations</h4>
+                        <p>Add eye-catching animations to impress viewers</p>
+                    </div>
+                    <div class="feature-item">
+                        <i data-feather="sliders" class="feature-icon"></i>
+                        <h4>Customizable</h4>
+                        <p>Choose colors, fonts, and styles to match your brand</p>
+                    </div>
+                    <div class="feature-item">
+                        <i data-feather="share-2" class="feature-icon"></i>
+                        <h4>Easy Sharing</h4>
+                        <p>Export to various formats for sharing online</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="start-tour-btn" class="btn btn-outline-primary">Take a Tour</button>
+                <button id="start-building-btn" class="btn btn-primary">Start Building</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Preview modal -->
+    <div id="preview-modal" class="modal hidden">
+        <div class="modal-content preview-modal-content">
+            <div class="modal-header">
+                <h2>Resume Preview</h2>
+                <button id="preview-close" class="modal-close">×</button>
+            </div>
+            <div class="modal-body preview-container">
+                <div id="preview-canvas"></div>
+            </div>
+            <div class="modal-footer">
+                <button id="preview-edit-btn" class="btn btn-outline-primary">Continue Editing</button>
+                <button id="preview-export-btn" class="btn btn-primary">Export Now</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Keyboard shortcuts modal -->
+    <div id="shortcuts-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Keyboard Shortcuts</h2>
+                <button id="shortcuts-close" class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="shortcuts-grid">
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+Z</span>
+                        <span class="shortcut-desc">Undo</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+Y</span>
+                        <span class="shortcut-desc">Redo</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+S</span>
+                        <span class="shortcut-desc">Save</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+P</span>
+                        <span class="shortcut-desc">Preview</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+E</span>
+                        <span class="shortcut-desc">Export</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Delete</span>
+                        <span class="shortcut-desc">Delete selected section</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Ctrl+D</span>
+                        <span class="shortcut-desc">Duplicate selected section</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">Esc</span>
+                        <span class="shortcut-desc">Deselect section</span>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">?</span>
+                        <span class="shortcut-desc">Show this shortcuts panel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast notifications container -->
+    <div id="toast-container" class="toast-container"></div>
     
     <script src="script.js"></script>
 </body>
