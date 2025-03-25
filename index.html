@@ -6,8 +6,10 @@
     <title>Interactive Resume Builder</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0-beta.4/dist/quill.snow.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0-beta.4/dist/quill.min.js"></script>
 </head>
 <body>
     <div class="app-container">
@@ -110,6 +112,27 @@
                                     <span>Delete</span>
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                    
+                    <div class="industry-selector mt-6">
+                        <h3 class="sidebar-heading">INDUSTRY TEMPLATES</h3>
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <button class="industry-btn px-3 py-1 text-xs rounded border" data-industry="tech">
+                                <i data-feather="cpu" class="w-3 h-3 mr-1"></i>Tech
+                            </button>
+                            <button class="industry-btn px-3 py-1 text-xs rounded border" data-industry="healthcare">
+                                <i data-feather="activity" class="w-3 h-3 mr-1"></i>Healthcare
+                            </button>
+                            <button class="industry-btn px-3 py-1 text-xs rounded border" data-industry="creative">
+                                <i data-feather="image" class="w-3 h-3 mr-1"></i>Creative
+                            </button>
+                            <button class="industry-btn px-3 py-1 text-xs rounded border" data-industry="finance">
+                                <i data-feather="dollar-sign" class="w-3 h-3 mr-1"></i>Finance
+                            </button>
+                        </div>
+                        <div id="industry-templates" class="mt-3 grid grid-cols-2 gap-2">
+                            <!-- Industry templates will be added here -->
                         </div>
                     </div>
                 </div>
@@ -364,6 +387,44 @@
                         <span class="shortcut-desc">Show this shortcuts panel</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ATS Modal -->
+    <div id="ats-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>ATS Compatibility Check</h2>
+                <button id="ats-close" class="modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-4">This tool analyzes your resume for Applicant Tracking System (ATS) compatibility.</p>
+                
+                <div id="ats-job-description" class="mb-4">
+                    <h3 class="text-lg font-medium mb-2">Job Description (Optional)</h3>
+                    <p class="text-sm text-gray-600 mb-2">Paste the job description to check keyword match</p>
+                    <textarea id="job-description" class="form-control" rows="4" placeholder="Paste job description here..."></textarea>
+                </div>
+                
+                <div id="ats-loading" class="hidden flex items-center justify-center py-6">
+                    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500"></div>
+                    <span class="ml-3">Analyzing your resume...</span>
+                </div>
+                
+                <div id="ats-results" class="hidden">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="copy-ats-report" class="btn btn-outline-primary">
+                    <i data-feather="copy" class="w-4 h-4 mr-1"></i>
+                    Copy Report
+                </button>
+                <button id="run-ats-check" class="btn btn-primary">
+                    <i data-feather="search" class="w-4 h-4 mr-1"></i>
+                    Run ATS Check
+                </button>
             </div>
         </div>
     </div>
