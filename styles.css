@@ -918,3 +918,108 @@ h1, h2, h3, h4, h5, h6 {
         grid-template-columns: 1fr;
     }
 }
+
+/* Rich Text Editor (Quill) Styles */
+.ql-editor {
+    min-height: 200px;
+    font-family: var(--body-font);
+    font-size: 0.875rem;
+}
+
+.ql-toolbar.ql-snow {
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+    border-color: var(--gray);
+    background-color: var(--light-gray);
+}
+
+.ql-container.ql-snow {
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    border-color: var(--gray);
+}
+
+/* Industry Template Buttons */
+.industry-btn {
+    display: flex;
+    align-items: center;
+    transition: var(--transition);
+    white-space: nowrap;
+}
+
+.industry-btn:hover {
+    background-color: var(--accent-color);
+}
+
+/* ATS Checker Styles */
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Print Optimization Styles */
+@media print {
+    body {
+        background-color: white;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .app-header, .sidebar, .control-buttons, .modal, .toast-container {
+        display: none !important;
+    }
+    
+    .app-container {
+        height: auto;
+    }
+    
+    .main-container {
+        display: block;
+    }
+    
+    .canvas-container {
+        padding: 0;
+        overflow: visible;
+    }
+    
+    .canvas {
+        width: 100% !important;
+        height: auto !important;
+        min-height: auto !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        padding: 20px;
+    }
+    
+    .section-container {
+        position: relative !important;
+        left: 0 !important;
+        top: 0 !important;
+        margin-bottom: 20px !important;
+        page-break-inside: avoid;
+        box-shadow: none !important;
+    }
+    
+    .section-handle {
+        display: none !important;
+    }
+    
+    /* Make sure animations don't interfere with printing */
+    @page {
+        size: auto;
+        margin: 10mm;
+    }
+    
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}
